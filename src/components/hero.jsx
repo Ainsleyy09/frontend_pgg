@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const images = [
-    "/public/images/IMG_20250112_111540.jpg",
-    "/public/images/IMG_20250125_093314.jpg",
-    "/public/images/IMG_20250125_094318_2.jpg",
-    "/public/images/IMG_20250125_121448_1.jpg",
-    "/public/images/IMG_20250127_093053.jpg",
+    "/images/IMG_20250112_111540.jpg",
+    "/images/IMG_20250125_093314.jpg",
+    "/images/IMG_20250125_094318_2.jpg",
+    "/images/IMG_20250125_121448_1.jpg",
+    "/images/IMG_20250127_093053.jpg",
 ];
 
 export default function Hero() {

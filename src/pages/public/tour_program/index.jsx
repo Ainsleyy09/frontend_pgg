@@ -65,12 +65,12 @@ function TourPrograms() {
                         name: "Private Tour Palembang",
                         description:
                             "Tur pribadi untuk Anda dan keluarga. Menjelajahi tempat ikonik Palembang dengan pemandu khusus dan fleksibilitas waktu sepenuhnya.",
-                        program_photo: "/dist/pgg_Images/private.jpg",
+                        program_photo: "/pgg_Images/private.jpg",
                         extra_photos: [
-                            "/dist/pgg_Images/private1.png",
-                            "/dist/pgg_Images/private2.png",
-                            "/dist/pgg_Images/private3.png",
-                            "/dist/pgg_Images/private4.png",
+                            "/pgg_Images/private1.png",
+                            "/pgg_Images/private2.png",
+                            "/pgg_Images/private3.png",
+                            "/pgg_Images/private4.png",
                         ],
                     },
                 ];
@@ -207,8 +207,9 @@ function TourPrograms() {
                             {list.map((p, index) => {
                                 const route = getRouteByProgram(p.id);
 
-                                const imageSrc = p.program_photo?.startsWith("/dist")
-                                    ? p.program_photo
+                                const imageSrc =
+                                p.program_type === "private"
+                                    ? p.program_photo 
                                     : `${programImageStorage}/${p.program_photo}`;
 
                                 // === PRIVATE PROGRAM ===

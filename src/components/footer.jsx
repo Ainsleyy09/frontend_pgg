@@ -15,7 +15,7 @@ function Footer() {
                 <div>
                     <div className="flex items-center gap-3 mb-4">
                         <img
-                            src="/public/pgg_Images/pgg_ImgID1.png"
+                            src="/images/pgg.jpg"
                             alt="Logo Palembang Good Guide"
                             className="w-12 h-12 drop-shadow-md rounded-full"
                         />

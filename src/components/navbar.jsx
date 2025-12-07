@@ -39,7 +39,7 @@ function Navbar() {
                     {/* Logo */}
                     <NavLink to="/" className="flex items-center">
                         <img
-                            src="/public/pgg_Images/pgg_ImgID1.png"
+                            src="/images/pgg.jpg"
                             className="mr-3 h-6 sm:h-9"
                             alt="Logo"
                         />
