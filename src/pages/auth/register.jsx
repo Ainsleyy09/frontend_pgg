@@ -52,7 +52,7 @@ function Register() {
                         <div className="flex flex-col items-center mb-6">
                             <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center shadow-lg">
                                 <img
-                                    src="/public/pgg_Images/pgg_ImgID1.png"
+                                    src="/pgg_Images/pgg_ImgID1.png"
                                     alt="Logo"
                                     className="w-16 h-16 bg-white rounded-full object-cover"
                                 />
