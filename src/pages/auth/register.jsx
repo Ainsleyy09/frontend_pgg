@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../../_services/auth";
-import { User, Lock, UserPlus, Mail } from 'lucide-react';
+import { User, Lock, UserPlus, Mail, EyeOff, Eye } from 'lucide-react';
 
 function Register() {
     const navigate = useNavigate();
@@ -12,6 +12,7 @@ function Register() {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (e) => {
         setFormData({
@@ -52,7 +53,7 @@ function Register() {
                         <div className="flex flex-col items-center mb-6">
                             <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center shadow-lg">
                                 <img
-                                    src="/pgg_Images/pgg_ImgID1.png"
+                                    src="/public/pgg_Images/pgg_ImgID1.png"
                                     alt="Logo"
                                     className="w-16 h-16 bg-white rounded-full object-cover"
                                 />
@@ -77,7 +78,7 @@ function Register() {
                                     htmlFor="name"
                                     className="flex items-center text-sm font-semibold text-gray-700 mb-2"
                                 >  <User className="w-4 h-4 mr-2 text-orange-600" />
-                                Name
+                                    Name
                                 </label>
                                 <input
                                     type="text"
@@ -111,22 +112,35 @@ function Register() {
                             </div>
 
                             <div>
-                                <label
-                                    htmlFor="password"
-                                    className="flex items-center text-sm font-semibold text-gray-700 mb-2"
-                                ><Lock className="w-4 h-4 mr-1 text-orange-600" />
+                                <label htmlFor="password" className="flex items-center text-sm font-semibold text-gray-700 mb-2">
+                                    <Lock className="w-4 h-4 mr-1 text-orange-600" />
                                     Password
                                 </label>
-                                <input
-                                    type="password"
-                                    name="password"
-                                    id="password"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    placeholder="••••••••"
-                                    className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 outline-none"
-                                    required
-                                />
+
+                                <div className="relative">
+                                    <input
+                                        type={showPassword ? "text" : "password"}
+                                        name="password"
+                                        id="password"
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                        placeholder="••••••••"
+                                        className="w-full px-4 py-3 pr-12 bg-gray-50 border-2 border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 outline-none"
+                                        required
+                                    />
+
+                                    <button
+                                        type="button"
+                                        className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                    >
+                                        {showPassword ? (
+                                            <EyeOff className="w-5 h-5" />
+                                        ) : (
+                                            <Eye className="w-5 h-5" />
+                                        )}
+                                    </button>
+                                </div>
                             </div>
 
                             <div className="flex items-center justify-between text-sm">
