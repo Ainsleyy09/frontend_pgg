@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { createRegistration, getRegistrations } from "../../../_services/registration";
 import { createPaymentToken } from "../../../_services/payment";
 import jsPDF from "jspdf";
@@ -8,16 +8,6 @@ export default function RegistrationForm({ program, schedules, userInfo, userReg
     const [step, setStep] = useState(1);
 
     const availableSchedules = schedules;
-    const [registrations, setRegistrations] = useState([]);
-
-    const refreshRegistrations = async () => {
-        const res = await getRegistrations();
-        setRegistrations(res.data);
-    };
-
-    useEffect(() => {
-        refreshRegistrations();
-    }, []);
 
     if (availableSchedules.length === 0) {
         return (
@@ -87,8 +77,6 @@ export default function RegistrationForm({ program, schedules, userInfo, userReg
         setStep(2);
     };
 
-    // ... import React, useState, useEffect, dll sama seperti sebelumnya
-
     const handlePayment = async () => {
         try {
             setLoading(true);
@@ -103,7 +91,6 @@ export default function RegistrationForm({ program, schedules, userInfo, userReg
             const registrationId = res.data.id;
 
             if (price === null) {
-                refreshRegistrations();
                 setStep(3);
                 setPaymentRef("NOPRICE-" + registrationId);
                 setLoading(false);
@@ -111,7 +98,6 @@ export default function RegistrationForm({ program, schedules, userInfo, userReg
             }
 
             if (price === 0) {
-                refreshRegistrations();
                 setStep(3);
                 setPaymentRef("FREE-" + registrationId);
                 setLoading(false);
@@ -120,7 +106,7 @@ export default function RegistrationForm({ program, schedules, userInfo, userReg
 
             const paymentRes = await createPaymentToken({
                 registration_id: registrationId,
-                amount: Number(selectedSchedule.price?.price ?? selectedSchedule.price ?? 0),
+                amount: selectedSchedule.price.price ?? selectedSchedule.price,
                 name: formData.name,
                 email: formData.email,
                 phone: formData.phone,
@@ -131,13 +117,11 @@ export default function RegistrationForm({ program, schedules, userInfo, userReg
             window.snap.pay(snapToken, {
                 onSuccess: (result) => {
                     setPaymentRef(result.order_id);
-                    refreshRegistrations();
                     setStep(3);
                     setLoading(false);
                 },
                 onPending: (result) => {
                     setPaymentRef(result.order_id);
-                    refreshRegistrations();
                     setStep(3);
                     setLoading(false);
                 },
@@ -161,7 +145,7 @@ export default function RegistrationForm({ program, schedules, userInfo, userReg
         const orange = "#ff8c00";
 
         const logo = new Image();
-        logo.src = "images/pgg.jpg";
+        logo.src = "/images/pgg.jpg";
 
         logo.onload = () => {
             doc.setFillColor(orange);
