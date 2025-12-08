@@ -1,3 +1,4 @@
+// src/pages/public/tour_program/detail.jsx
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
@@ -240,134 +241,127 @@ export default function DetailProgram() {
                                     📍 {route?.length || 0} Titik
                                 </div>
                             </div>
+                            {/* Button / notifications */}
+                            <div className="mt-3 flex flex-col gap-2">
+                                {userInfo && schedules.length === 0 && (
+                                    <p className="text-gray-600 bg-gray-50 border p-2 rounded-lg">
+                                        Belum ada jadwal untuk program ini
+                                    </p>
+                                )}
 
-                            {/* TITIK PERJALANAN */}
-                            {route && route.length > 0 && (
-                                <div className="bg-white rounded-xl shadow p-5">
-                                    <h4 className="text-teal-700 text-sm font-semibold mb-2 flex items-center gap-1">
-                                        <svg
-                                            className="w-4 h-4"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                                            />
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                                            />
-                                        </svg>
-                                        Titik Perjalanan
-                                    </h4>
+                                {userInfo &&
+                                    !hasAvailableSchedule &&
+                                    schedules.length > 0 && (
+                                        <p className="text-red-600 bg-red-50 border border-red-200 p-2 rounded-lg">
+                                            Semua jadwal sudah penuh atau kamu
+                                            sudah mendaftar.
+                                        </p>
+                                    )}
 
-                                    <div className="bg-gray-50 rounded-lg p-3 overflow-hidden flex flex-col max-h-64">
-                                        <div className="flex-1 overflow-y-auto scrollbar-thin space-y-2">
-                                            {route.map((pos, idx) => (
-                                                <div
-                                                    key={idx}
-                                                    className="bg-white p-2 rounded border border-gray-200"
-                                                >
-                                                    <div className="font-semibold text-xs text-teal-600 mb-1">
-                                                        {pos.label || `Titik ${idx + 1}`}
-                                                    </div>
-                                                    <div className="text-[10px] text-gray-500 font-mono">
-                                                        {pos.lat.toFixed(5)},{" "}
-                                                        {pos.lng.toFixed(5)}
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
+                                {userInfo && hasAvailableSchedule && (
+                                    <button
+                                        onClick={() => setShowForm((s) => !s)}
+                                        className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg shadow"
+                                    >
+                                        {showForm
+                                            ? "Tutup Form"
+                                            : "Daftar Program"}
+                                    </button>
+                                )}
 
-                                        {/* Button / notifications */}
-                                        <div className="mt-3 flex flex-col gap-2">
-                                            {userInfo &&
-                                                schedules.length === 0 && (
-                                                    <p className="text-gray-600 bg-gray-50 border p-2 rounded-lg">
-                                                        Belum ada jadwal untuk
-                                                        program ini
-                                                    </p>
-                                                )}
-
-                                            {userInfo &&
-                                                !hasAvailableSchedule &&
-                                                schedules.length > 0 && (
-                                                    <p className="text-red-600 bg-red-50 border border-red-200 p-2 rounded-lg">
-                                                        Semua jadwal sudah penuh
-                                                        atau kamu sudah
-                                                        mendaftar.
-                                                    </p>
-                                                )}
-
-                                            {userInfo &&
-                                                hasAvailableSchedule && (
-                                                    <button
-                                                        onClick={() =>
-                                                            setShowForm(
-                                                                (s) => !s
-                                                            )
-                                                        }
-                                                        className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg shadow"
-                                                    >
-                                                        {showForm
-                                                            ? "Tutup Form"
-                                                            : "Daftar Program"}
-                                                    </button>
-                                                )}
-
-                                            {!userInfo && (
-                                                <button
-                                                    onClick={() =>
-                                                        navigate("/login")
-                                                    }
-                                                    className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg shadow"
-                                                >
-                                                    Login untuk mendaftar
-                                                </button>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
+                                {!userInfo && (
+                                    <button
+                                        onClick={() => navigate("/login")}
+                                        className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg shadow"
+                                    >
+                                        Login untuk mendaftar
+                                    </button>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                {/* MAP */}
-                <div className="w-full h-96 rounded-xl overflow-hidden shadow border">
-                    {route && route.length > 0 ? (
-                        <MapContainer
-                            center={center}
-                            zoom={14}
-                            scrollWheelZoom
-                            whenCreated={(map) => (mapRef.current = map)}
-                            style={{ width: "100%", height: "100%" }}
-                        >
-                            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                            <Polyline
-                                positions={route.map((p) => [p.lat, p.lng])}
-                                pathOptions={{ color: "#f97316", weight: 4 }}
-                            />
-                            {route.map((pos, idx) => (
-                                <Marker key={idx} position={[pos.lat, pos.lng]}>
-                                    <Popup>
-                                        {pos.label || `Titik ${idx + 1}`}
-                                    </Popup>
-                                </Marker>
-                            ))}
-                        </MapContainer>
-                    ) : (
-                        <div className="flex items-center justify-center h-full text-gray-400">
-                            Tidak ada rute
+                {/* MAP AND TITIK PERJALANAN SIDE BY SIDE */}
+                {route && route.length > 0 && (
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        {/* MAP */}
+                        <div className="w-full h-80 rounded-xl overflow-hidden shadow border">
+                            <MapContainer
+                                center={center}
+                                zoom={14}
+                                scrollWheelZoom
+                                whenCreated={(map) => (mapRef.current = map)}
+                                style={{ width: "100%", height: "100%" }}
+                            >
+                                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                                <Polyline
+                                    positions={route.map((p) => [p.lat, p.lng])}
+                                    pathOptions={{
+                                        color: "#f97316",
+                                        weight: 4,
+                                    }}
+                                />
+                                {route.map((pos, idx) => (
+                                    <Marker
+                                        key={idx}
+                                        position={[pos.lat, pos.lng]}
+                                    >
+                                        <Popup>
+                                            {pos.label || `Titik ${idx + 1}`}
+                                        </Popup>
+                                    </Marker>
+                                ))}
+                            </MapContainer>
                         </div>
-                    )}
-                </div>
+
+                        {/* TITIK PERJALANAN */}
+                        <div className="bg-white rounded-xl shadow p-5">
+                            <h4 className="text-teal-700 text-sm font-semibold mb-2 flex items-center gap-1">
+                                <svg
+                                    className="w-4 h-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                    />
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                    />
+                                </svg>
+                                Titik Perjalanan
+                            </h4>
+
+                            <div className="bg-gray-50 rounded-lg p-3 overflow-hidden flex flex-col max-h-64">
+                                <div className="flex-1 overflow-y-auto scrollbar-thin space-y-2">
+                                    {route.map((pos, idx) => (
+                                        <div
+                                            key={idx}
+                                            className="bg-white p-2 rounded border border-gray-200"
+                                        >
+                                            <div className="font-semibold text-xs text-teal-600 mb-1">
+                                                {pos.label ||
+                                                    `Titik ${idx + 1}`}
+                                            </div>
+                                            <div className="text-[10px] text-gray-500 font-mono">
+                                                {pos.lat.toFixed(5)},{" "}
+                                                {pos.lng.toFixed(5)}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {/* SCHEDULE LIST */}
                 <div className="bg-white rounded-xl shadow p-5">
